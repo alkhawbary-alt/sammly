@@ -19,6 +19,8 @@ export const BlendMode = z.enum([
   'saturation',
   'color',
   'luminosity',
+  /** Photoshop "linear dodge (add)". */
+  'plus-lighter',
 ]);
 export type BlendMode = z.infer<typeof BlendMode>;
 
@@ -89,6 +91,14 @@ export const TextLayer = BaseLayer.extend({
   /** Multi-style text (non-editable layers only). When present, `text` is the concatenation. */
   runs: z.array(TextRun).optional(),
   fit: TextFit.default({ mode: 'none', minFontSize: 8 }),
+  /**
+   * Distance from the box top to the first baseline (box-local px). When set, the first line
+   * sits exactly on it whatever the font metrics are — how Photoshop point text is anchored.
+   */
+  baseline: z.number().optional(),
+  shadow: z.object({ color: Color, x: z.number(), y: z.number(), blur: z.number().nonnegative() }).optional(),
+  /** Outside stroke. */
+  stroke: z.object({ color: Color, width: z.number().positive() }).optional(),
 });
 export type TextLayer = z.infer<typeof TextLayer>;
 

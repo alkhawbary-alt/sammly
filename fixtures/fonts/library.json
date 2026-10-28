@@ -1,0 +1,24 @@
+{
+  "$comment": "Open-licensed (OFL) fonts for tests and the demo seed. One entry per face; variable fonts are listed once per weight with the same file. aliases = PostScript names found in PSDs.",
+  "fonts": [
+    { "id": "plex-arabic-100", "family": "IBM Plex Sans Arabic", "weight": 100, "style": "normal", "file": "IBMPlexSansArabic-Thin.woff2", "aliases": ["IBMPlexSansArabic-Thin"], "scripts": ["arabic", "latin"], "license": "OFL-1.1" },
+    { "id": "plex-arabic-200", "family": "IBM Plex Sans Arabic", "weight": 200, "style": "normal", "file": "IBMPlexSansArabic-ExtraLight.woff2", "aliases": ["IBMPlexSansArabic-ExtraLight"], "scripts": ["arabic", "latin"], "license": "OFL-1.1" },
+    { "id": "plex-arabic-300", "family": "IBM Plex Sans Arabic", "weight": 300, "style": "normal", "file": "IBMPlexSansArabic-Light.woff2", "aliases": ["IBMPlexSansArabic-Light"], "scripts": ["arabic", "latin"], "license": "OFL-1.1" },
+    { "id": "plex-arabic-400", "family": "IBM Plex Sans Arabic", "weight": 400, "style": "normal", "file": "IBMPlexSansArabic-Regular.woff2", "aliases": ["IBMPlexSansArabic-Regular", "IBMPlexSansArabic"], "scripts": ["arabic", "latin"], "license": "OFL-1.1" },
+    { "id": "plex-arabic-450", "family": "IBM Plex Sans Arabic Text", "weight": 450, "style": "normal", "file": "IBMPlexSansArabic-Text.woff2", "aliases": ["IBMPlexSansArabic-Text"], "scripts": ["arabic", "latin"], "license": "OFL-1.1" },
+    { "id": "plex-arabic-500", "family": "IBM Plex Sans Arabic", "weight": 500, "style": "normal", "file": "IBMPlexSansArabic-Medium.woff2", "aliases": ["IBMPlexSansArabic-Medium"], "scripts": ["arabic", "latin"], "license": "OFL-1.1" },
+    { "id": "plex-arabic-600", "family": "IBM Plex Sans Arabic", "weight": 600, "style": "normal", "file": "IBMPlexSansArabic-SemiBold.woff2", "aliases": ["IBMPlexSansArabic-SemiBold"], "scripts": ["arabic", "latin"], "license": "OFL-1.1" },
+    { "id": "plex-arabic-700", "family": "IBM Plex Sans Arabic", "weight": 700, "style": "normal", "file": "IBMPlexSansArabic-Bold.woff2", "aliases": ["IBMPlexSansArabic-Bold"], "scripts": ["arabic", "latin"], "license": "OFL-1.1" },
+    { "id": "rubik-300", "family": "Rubik", "weight": 300, "style": "normal", "file": "Rubik-VF.ttf", "aliases": ["Rubik-Light"], "scripts": ["arabic", "latin"], "license": "OFL-1.1" },
+    { "id": "rubik-400", "family": "Rubik", "weight": 400, "style": "normal", "file": "Rubik-VF.ttf", "aliases": ["Rubik-Regular", "Rubik"], "scripts": ["arabic", "latin"], "license": "OFL-1.1" },
+    { "id": "rubik-500", "family": "Rubik", "weight": 500, "style": "normal", "file": "Rubik-VF.ttf", "aliases": ["Rubik-Medium"], "scripts": ["arabic", "latin"], "license": "OFL-1.1" },
+    { "id": "rubik-700", "family": "Rubik", "weight": 700, "style": "normal", "file": "Rubik-VF.ttf", "aliases": ["Rubik-Bold"], "scripts": ["arabic", "latin"], "license": "OFL-1.1" },
+    { "id": "baloo-bhaijaan2-400", "family": "Baloo Bhaijaan 2", "weight": 400, "style": "normal", "file": "BalooBhaijaan2-VF.ttf", "aliases": ["BalooBhaijaan2-Regular"], "scripts": ["arabic", "latin"], "license": "OFL-1.1" },
+    { "id": "baloo-bhaijaan2-500", "family": "Baloo Bhaijaan 2", "weight": 500, "style": "normal", "file": "BalooBhaijaan2-VF.ttf", "aliases": ["BalooBhaijaan2-Medium"], "scripts": ["arabic", "latin"], "license": "OFL-1.1" },
+    { "id": "baloo-bhaijaan2-700", "family": "Baloo Bhaijaan 2", "weight": 700, "style": "normal", "file": "BalooBhaijaan2-VF.ttf", "aliases": ["BalooBhaijaan2-Bold"], "scripts": ["arabic", "latin"], "license": "OFL-1.1" },
+    { "id": "cairo-400", "family": "Cairo", "weight": 400, "style": "normal", "file": "Cairo-VF.ttf", "aliases": ["Cairo-Regular", "Cairo"], "scripts": ["arabic", "latin"], "license": "OFL-1.1" },
+    { "id": "cairo-700", "family": "Cairo", "weight": 700, "style": "normal", "file": "Cairo-VF.ttf", "aliases": ["Cairo-Bold"], "scripts": ["arabic", "latin"], "license": "OFL-1.1" },
+    { "id": "tajawal-400", "family": "Tajawal", "weight": 400, "style": "normal", "file": "Tajawal-Regular.ttf", "aliases": ["Tajawal-Regular", "Tajawal"], "scripts": ["arabic", "latin"], "license": "OFL-1.1" },
+    { "id": "tajawal-700", "family": "Tajawal", "weight": 700, "style": "normal", "file": "Tajawal-Bold.ttf", "aliases": ["Tajawal-Bold"], "scripts": ["arabic", "latin"], "license": "OFL-1.1" }
+  ]
+}

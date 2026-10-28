@@ -8,12 +8,20 @@
   },
   "scripts": {
     "typecheck": "tsc -p tsconfig.json",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run --passWithNoTests",
+    "qa": "tsx scripts/qa.ts",
+    "analyze": "tsx scripts/analyze.ts"
   },
   "dependencies": {
-    "@sammly/template-schema": "workspace:*"
+    "@napi-rs/canvas": "^1.0.13",
+    "@sammly/template-schema": "workspace:*",
+    "ag-psd": "^33.0.0",
+    "nanoid": "^5.1.16",
+    "sharp": "^0.35.5"
   },
   "devDependencies": {
-    "@sammly/config": "workspace:*"
+    "@sammly/config": "workspace:*",
+    "@sammly/renderer-html": "workspace:*",
+    "playwright": "^1.64.1"
   }
 }

@@ -29,9 +29,16 @@ function fitBox(box){
   while(hi-lo>0.25){var mid=(hi+lo)/2;if(fits(box,tx,cfg,mid))lo=mid;else hi=mid;}
   tx.style.fontSize=lo+'px';return true;
 }
+function anchor(box){
+  var tx=box.firstElementChild;var m=tx&&tx.querySelector('.bl');if(!m)return;
+  tx.style.marginTop='0px';
+  tx.style.marginTop=(parseFloat(box.getAttribute('data-baseline'))-m.offsetTop)+'px';
+}
 function run(){
   var over=[];var boxes=document.querySelectorAll('[data-fit]');
   for(var i=0;i<boxes.length;i++){if(!fitBox(boxes[i])){var k=boxes[i].getAttribute('data-fields');if(k)over=over.concat(k.split(','));}}
+  var anchored=document.querySelectorAll('[data-baseline]');
+  for(var j=0;j<anchored.length;j++)anchor(anchored[j]);
   window.__sammly={done:true,overflow:over};
   return over;
 }

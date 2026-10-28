@@ -136,8 +136,11 @@ function textHtml(ctx: Ctx, l: TextLayer): string {
   if (st.letterSpacing && !rtl && !ARABIC_RE.test(l.text)) {
     inner.push(`letter-spacing:${Math.round((st.letterSpacing / st.fontSize) * 10000) / 10000}em`);
   }
+  if (l.shadow) inner.push(`text-shadow:${px(l.shadow.x)} ${px(l.shadow.y)} ${px(l.shadow.blur)} ${l.shadow.color}`);
+  if (l.stroke) inner.push(`-webkit-text-stroke:${px(l.stroke.width * 2)} ${l.stroke.color}`, 'paint-order:stroke fill');
 
   let extra = ` dir="${l.direction}"`;
+  if (l.baseline !== undefined && l.verticalAlign === 'top') extra += ` data-baseline="${l.baseline}"`;
   if (l.fit.mode !== 'none') {
     const cfg = { mode: l.fit.mode, size: st.fontSize, min: Math.min(l.fit.minFontSize, st.fontSize), maxLines: l.fit.maxLines };
     extra += ` data-fit="${escapeHtml(JSON.stringify(cfg))}"`;
@@ -145,7 +148,9 @@ function textHtml(ctx: Ctx, l: TextLayer): string {
   const keys = ctx.applied.fieldKeysByLayer.get(l.id);
   if (keys) extra += ` data-fields="${escapeHtml(keys.join(','))}"`;
 
-  const content = l.runs?.length ? l.runs.map((r) => runHtml(ctx, r, st, rtl)).join('') : escapeHtml(l.text);
+  let content = l.runs?.length ? l.runs.map((r) => runHtml(ctx, r, st, rtl)).join('') : escapeHtml(l.text);
+  // Zero-size marker sitting on the first baseline; the page script measures it to anchor the line.
+  if (l.baseline !== undefined && l.verticalAlign === 'top') content = `<span class="bl"></span>${content}`;
   return `<div ${attrs(l, 'T', outer, extra)}><div class="tx" style="${escapeHtml(inner.join(';'))}">${content}</div></div>`;
 }
 
@@ -236,6 +241,7 @@ body{-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
 #canvas{position:relative;overflow:hidden;isolation:isolate}
 .L{position:absolute}
 .G{pointer-events:none}
+.bl{display:inline-block;width:0;height:0;vertical-align:baseline}
 .SV>svg{width:100%;height:100%;display:block}
 .SV[data-fill] svg,.SV[data-fill] svg *:not([fill="none"]){fill:var(--sf)!important}`;
 

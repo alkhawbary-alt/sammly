@@ -23,3 +23,6 @@ POC/tests/test-data/
 .DS_Store
 Thumbs.db
 
+
+# Owner PSD fixtures are large (up to 117 MB); kept locally, not in git
+fixtures/psd/*.psd

@@ -1,3 +1,4 @@
+/// <reference lib="dom" />
 import type { Browser } from 'playwright';
 
 /** Origin every asset/page URL lives on inside the headless browser. Nothing else is reachable. */

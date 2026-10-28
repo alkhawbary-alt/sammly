@@ -1,4 +1,1 @@
-{
-  "extends": "@sammly/config/tsconfig.node.json",
-  "include": ["src", "test"]
-}
+﻿{ "extends": "@sammly/config/tsconfig.node.json", "include": ["src", "test", "scripts"] }
