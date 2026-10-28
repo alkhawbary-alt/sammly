@@ -1,0 +1,25 @@
+﻿node_modules/
+dist/
+.next/
+.turbo/
+*.tsbuildinfo
+coverage/
+test-output/
+
+# local infra data (embedded postgres, local object storage)
+.data/
+
+.env
+.env.local
+!.env.example
+
+# POC artifacts
+POC/node_modules/
+POC/data/
+POC/comparisons/
+POC/client/dist/
+POC/tests/test-data/
+
+.DS_Store
+Thumbs.db
+

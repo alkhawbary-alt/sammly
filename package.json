@@ -1,0 +1,32 @@
+{
+  "name": "sammly",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.15.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "concurrently -k -n infra,apps -c yellow,cyan \"pnpm infra\" \"turbo run dev\"",
+    "infra": "tsx scripts/infra.ts",
+    "build": "turbo run build",
+    "lint": "eslint .",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "check": "pnpm lint && pnpm typecheck && pnpm test"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.0",
+    "@types/node": "^24.0.0",
+    "concurrently": "^10.0.5",
+    "dotenv": "^17.0.0",
+    "embedded-postgres": "18.4.0-beta.17",
+    "eslint": "^10.13.0",
+    "globals": "^17.0.0",
+    "tsx": "^4.23.15",
+    "turbo": "^2.11.10",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.72.1",
+    "vitest": "^5.0.5"
+  }
+}

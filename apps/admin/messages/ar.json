@@ -1,0 +1,35 @@
+{
+  "app": {
+    "name": "صمملي",
+    "subtitle": "لوحة الإدارة",
+    "soon": "قريباً",
+    "language": "English"
+  },
+  "nav": {
+    "dashboard": "الرئيسية",
+    "templates": "القوالب",
+    "categories": "تصنيفات القوالب",
+    "fonts": "الخطوط",
+    "businesses": "المستخدمون / الأنشطة",
+    "plans": "الباقات",
+    "subscriptions": "الاشتراكات",
+    "credits": "رصيد AI",
+    "simulator": "محاكي العميل",
+    "appAssistant": "مساعد التطبيق",
+    "marketingAssistant": "مساعد التسويق",
+    "knowledgeBase": "قاعدة المعرفة",
+    "payments": "المدفوعات",
+    "notifications": "الإشعارات",
+    "reports": "التقارير",
+    "security": "الأمان",
+    "settings": "إعدادات النظام"
+  },
+  "dashboard": {
+    "title": "الرئيسية",
+    "welcome": "مرحباً بك في لوحة إدارة صمملي",
+    "status": "حالة الخدمات",
+    "api": "واجهة البرمجة (API)",
+    "ok": "تعمل",
+    "down": "متوقفة"
+  }
+}

@@ -1,0 +1,48 @@
+# Used when INFRA_MODE=docker. The embedded mode (default) needs none of this.
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: sammly
+      POSTGRES_PASSWORD: sammly
+      POSTGRES_DB: sammly
+    ports:
+      - '5433:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U sammly']
+      interval: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - '6379:6379'
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: sammly
+      MINIO_ROOT_PASSWORD: sammly-secret
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - miniodata:/data
+
+  minio-init:
+    image: minio/mc:latest
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      until mc alias set local http://minio:9000 sammly sammly-secret; do sleep 1; done;
+      mc mb --ignore-existing local/sammly;
+      mc anonymous set none local/sammly;
+      "
+
+volumes:
+  pgdata:
+  miniodata:

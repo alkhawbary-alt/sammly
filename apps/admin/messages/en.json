@@ -1,0 +1,35 @@
+{
+  "app": {
+    "name": "Sammly",
+    "subtitle": "Admin",
+    "soon": "Soon",
+    "language": "العربية"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "templates": "Templates",
+    "categories": "Categories",
+    "fonts": "Fonts",
+    "businesses": "Businesses",
+    "plans": "Plans",
+    "subscriptions": "Subscriptions",
+    "credits": "AI credits",
+    "simulator": "Customer simulator",
+    "appAssistant": "App assistant",
+    "marketingAssistant": "Marketing assistant",
+    "knowledgeBase": "Knowledge base",
+    "payments": "Payments",
+    "notifications": "Notifications",
+    "reports": "Reports",
+    "security": "Security",
+    "settings": "System settings"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome to the Sammly admin",
+    "status": "Service status",
+    "api": "API",
+    "ok": "Up",
+    "down": "Down"
+  }
+}
