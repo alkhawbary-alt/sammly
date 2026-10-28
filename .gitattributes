@@ -3,3 +3,4 @@
 *.psd binary
 *.ttf binary
 *.woff2 binary
+fixtures/psd/*.psd filter=lfs diff=lfs merge=lfs -text

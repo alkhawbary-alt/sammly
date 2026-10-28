@@ -1,4 +1,4 @@
-﻿node_modules/
+node_modules/
 dist/
 .next/
 .turbo/
@@ -24,6 +24,4 @@ POC/tests/test-data/
 Thumbs.db
 
 
-# Owner PSD fixtures are large (up to 117 MB); kept locally, not in git
-fixtures/psd/*.psd
 packages/db/src/generated/
