@@ -97,6 +97,8 @@ export async function adminImportRoutes(app: FastifyInstance) {
   r.get('/admin/jobs/:id', { schema: { tags: ['admin'], params: z.object({ id: z.uuid() }) } }, async (req) => {
     const job = await db().job.findUnique({ where: { id: req.params.id } });
     if (!job) throw new AppError(ErrorCode.NOT_FOUND, 'Job not found', 404);
-    return { id: job.id, type: job.type, status: job.status, attempts: job.attempts, result: job.result, error: job.error, durationMs: job.durationMs, createdAt: job.createdAt };
+    const result = job.result as { assetId?: string } | null;
+    const url = result?.assetId ? await assetUrl(result.assetId) : null;
+    return { id: job.id, type: job.type, status: job.status, attempts: job.attempts, result: job.result, url, error: job.error, durationMs: job.durationMs, createdAt: job.createdAt };
   });
 }

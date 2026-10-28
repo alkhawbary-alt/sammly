@@ -1,9 +1,7 @@
 import { db, disconnectDb } from '@sammly/db';
 import { config } from '@sammly/platform';
 import { buildApp } from './app';
-import { adminFontRoutes } from './routes/admin-fonts';
-import { adminImportRoutes } from './routes/admin-imports';
-import { storageRoutes } from './routes/storage';
+import { v1Routes } from './routes';
 
 const c = config();
 const app = buildApp(
@@ -12,13 +10,9 @@ const app = buildApp(
       await db().$queryRaw`select 1`;
       return true;
     },
-    routes: async (v1) => {
-      await v1.register(storageRoutes);
-      await v1.register(adminImportRoutes);
-      await v1.register(adminFontRoutes);
-    },
+    routes: v1Routes,
   },
-  { logger: { level: c.LOG_LEVEL } },
+  { logger: { level: c.LOG_LEVEL, redact: ['req.headers.authorization', 'req.headers.cookie'] } },
 );
 
 await app.listen({ port: c.API_PORT, host: '0.0.0.0' });

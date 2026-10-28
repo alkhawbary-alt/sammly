@@ -5,9 +5,8 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { db, disconnectDb } from '@sammly/db';
 import { buildApp } from '../src/app';
-import { adminFontRoutes } from '../src/routes/admin-fonts';
-import { adminImportRoutes } from '../src/routes/admin-imports';
-import { storageRoutes } from '../src/routes/storage';
+import { v1Routes } from '../src/routes';
+import { adminHeaders } from './helpers';
 
 process.env.DATABASE_URL ??= 'postgresql://sammly:sammly@localhost:5433/sammly';
 const dbUp = await db()
@@ -16,22 +15,19 @@ const dbUp = await db()
   .catch(() => false);
 
 describe.skipIf(!dbUp)('admin imports & fonts (integration)', () => {
-  const app = buildApp({
-    checkDb: async () => true,
-    routes: async (v1) => {
-      await v1.register(storageRoutes);
-      await v1.register(adminImportRoutes);
-      await v1.register(adminFontRoutes);
-    },
+  const app = buildApp({ checkDb: async () => true, routes: v1Routes });
+  let headers: Record<string, string>;
+  beforeAll(async () => {
+    await app.ready();
+    headers = await adminHeaders(app);
   });
-  beforeAll(() => app.ready());
   afterAll(async () => {
     await app.close();
     await disconnectDb();
   });
 
   async function upload(kind: 'psd' | 'font', body: Buffer) {
-    const p = await app.inject({ method: 'POST', url: '/api/v1/admin/uploads/presign', payload: { kind, mime: 'application/octet-stream', bytes: body.length } });
+    const p = await app.inject({ headers, method: 'POST', url: '/api/v1/admin/uploads/presign', payload: { kind, mime: 'application/octet-stream', bytes: body.length } });
     expect(p.statusCode).toBe(200);
     const { key, url } = p.json();
     const path = new URL(url).pathname;
@@ -41,7 +37,7 @@ describe.skipIf(!dbUp)('admin imports & fonts (integration)', () => {
   }
 
   it('rejects oversized presign requests', async () => {
-    const r = await app.inject({ method: 'POST', url: '/api/v1/admin/uploads/presign', payload: { kind: 'psd', mime: 'image/vnd.adobe.photoshop', bytes: 300 * 1024 * 1024 } });
+    const r = await app.inject({ headers, method: 'POST', url: '/api/v1/admin/uploads/presign', payload: { kind: 'psd', mime: 'image/vnd.adobe.photoshop', bytes: 300 * 1024 * 1024 } });
     expect(r.statusCode).toBe(413);
   });
 
@@ -54,21 +50,21 @@ describe.skipIf(!dbUp)('admin imports & fonts (integration)', () => {
 
   it('refuses a non-PSD file by magic bytes, whatever its name', async () => {
     const { key } = await upload('psd', Buffer.from('<html>not a psd</html>'));
-    const r = await app.inject({ method: 'POST', url: '/api/v1/admin/imports', payload: { sourceKey: key, fileName: 'evil.psd' } });
+    const r = await app.inject({ headers, method: 'POST', url: '/api/v1/admin/imports', payload: { sourceKey: key, fileName: 'evil.psd' } });
     expect(r.statusCode).toBe(400);
     expect(r.json().error.code).toBe('VALIDATION_ERROR');
   });
 
   it('validates import keys and ids', async () => {
-    expect((await app.inject({ method: 'POST', url: '/api/v1/admin/imports', payload: { sourceKey: '../../etc/passwd', fileName: 'x.psd' } })).statusCode).toBe(400);
-    expect((await app.inject({ method: 'GET', url: '/api/v1/admin/imports/not-a-uuid' })).statusCode).toBe(400);
-    expect((await app.inject({ method: 'GET', url: '/api/v1/admin/imports/00000000-0000-4000-8000-000000000000' })).statusCode).toBe(404);
+    expect((await app.inject({ headers, method: 'POST', url: '/api/v1/admin/imports', payload: { sourceKey: '../../etc/passwd', fileName: 'x.psd' } })).statusCode).toBe(400);
+    expect((await app.inject({ headers, method: 'GET', url: '/api/v1/admin/imports/not-a-uuid' })).statusCode).toBe(400);
+    expect((await app.inject({ headers, method: 'GET', url: '/api/v1/admin/imports/00000000-0000-4000-8000-000000000000' })).statusCode).toBe(404);
   });
 
   it('queues a PSD import (202) with an ImportJob and a Job row', async () => {
     const psd = Buffer.concat([Buffer.from('8BPS'), Buffer.alloc(64)]);
     const { key } = await upload('psd', psd);
-    const r = await app.inject({ method: 'POST', url: '/api/v1/admin/imports', payload: { sourceKey: key, fileName: 'test.psd' } });
+    const r = await app.inject({ headers, method: 'POST', url: '/api/v1/admin/imports', payload: { sourceKey: key, fileName: 'test.psd' } });
     expect(r.statusCode).toBe(202);
     const { importId, jobId } = r.json();
     const job = await db().job.findUniqueOrThrow({ where: { id: jobId } });
@@ -79,7 +75,7 @@ describe.skipIf(!dbUp)('admin imports & fonts (integration)', () => {
   });
 
   it('lists the seeded font library with aliases and signed URLs', async () => {
-    const r = await app.inject({ method: 'GET', url: '/api/v1/admin/fonts' });
+    const r = await app.inject({ headers, method: 'GET', url: '/api/v1/admin/fonts' });
     expect(r.statusCode).toBe(200);
     const fonts = r.json() as { family: string; aliases: string[]; url: string }[];
     if (fonts.length) {
@@ -90,7 +86,7 @@ describe.skipIf(!dbUp)('admin imports & fonts (integration)', () => {
 
   it('rejects a font upload that is not a font', async () => {
     const { key } = await upload('font', Buffer.from('definitely not a font file'));
-    const r = await app.inject({ method: 'POST', url: '/api/v1/admin/fonts', payload: { sourceKey: key, family: 'X', weight: 400 } });
+    const r = await app.inject({ headers, method: 'POST', url: '/api/v1/admin/fonts', payload: { sourceKey: key, family: 'X', weight: 400 } });
     expect(r.statusCode).toBe(400);
   });
 });

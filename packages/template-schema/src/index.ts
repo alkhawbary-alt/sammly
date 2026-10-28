@@ -5,3 +5,4 @@ export * from './document';
 export * from './walk';
 export * from './validate';
 export * from './migrate';
+export * from './variants';

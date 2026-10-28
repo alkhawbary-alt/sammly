@@ -30,6 +30,23 @@ model AdminUser {
   updatedAt    DateTime  @updatedAt
 }
 
+/// Rotating refresh tokens (admin and app users). Only a SHA-256 of the token is stored.
+/// Reusing a rotated token revokes its whole family (theft detection).
+model RefreshToken {
+  id           String    @id @default(uuid()) @db.Uuid
+  subjectType  String
+  subjectId    String    @db.Uuid
+  tokenHash    String    @unique
+  familyId     String    @db.Uuid
+  expiresAt    DateTime
+  revokedAt    DateTime?
+  replacedById String?   @db.Uuid
+  createdAt    DateTime  @default(now())
+
+  @@index([subjectType, subjectId])
+  @@index([familyId])
+}
+
 enum BusinessStatus {
   ACTIVE
   SUSPENDED

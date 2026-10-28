@@ -6,6 +6,7 @@ import Fastify from 'fastify';
 import { db, disconnectDb } from '@sammly/db';
 import { config, startWorker } from '@sammly/platform';
 import { importPsdJob } from './jobs/import-psd';
+import { renderTestJob } from './jobs/render-test';
 import { closeBrowser } from './render';
 
 const c = config();
@@ -25,6 +26,7 @@ await health.listen({ port: c.WORKER_HEALTH_PORT, host: '0.0.0.0' });
 const worker = startWorker({
   handlers: {
     'import:psd': { handler: importPsdJob, concurrency: 1 },
+    'render:test': { handler: renderTestJob, concurrency: c.RENDER_CONCURRENCY },
   },
   log: (msg, extra) => health.log.info(extra ?? {}, msg),
 });

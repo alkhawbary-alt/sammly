@@ -1,4 +1,6 @@
+import cookie from '@fastify/cookie';
 import cors from '@fastify/cors';
+import rateLimit from '@fastify/rate-limit';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import Fastify, { type FastifyInstance } from 'fastify';
@@ -23,7 +25,9 @@ export function buildApp(deps: AppDeps, opts: { logger?: boolean | object } = {}
   app.setValidatorCompiler(validatorCompiler);
   app.setSerializerCompiler(serializerCompiler);
 
-  app.register(cors, { origin: true, credentials: true });
+  app.register(cors, { origin: true, credentials: true, methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'] });
+  app.register(cookie);
+  app.register(rateLimit, { global: false });
   app.register(swagger, {
     openapi: { info: { title: 'Sammly API', version: '1.0.0' } },
     transform: jsonSchemaTransform,
