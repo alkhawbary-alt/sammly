@@ -1,35 +1,105 @@
 {
-  "app": {
-    "name": "صمملي",
-    "subtitle": "لوحة الإدارة",
-    "soon": "قريباً",
-    "language": "English"
-  },
+  "app": { "name": "صمملي", "subtitle": "لوحة الإدارة", "soon": "قريباً", "language": "English" },
+  "common": { "logout": "تسجيل الخروج", "confirmDelete": "هل أنت متأكد من الحذف؟", "cancel": "إلغاء", "save": "حفظ", "add": "إضافة" },
+  "login": { "subtitle": "لوحة إدارة القوالب", "email": "البريد الإلكتروني", "password": "كلمة المرور", "submit": "دخول", "invalid": "البريد أو كلمة المرور غير صحيحة" },
   "nav": {
-    "dashboard": "الرئيسية",
-    "templates": "القوالب",
-    "categories": "تصنيفات القوالب",
-    "fonts": "الخطوط",
-    "businesses": "المستخدمون / الأنشطة",
-    "plans": "الباقات",
-    "subscriptions": "الاشتراكات",
-    "credits": "رصيد AI",
-    "simulator": "محاكي العميل",
-    "appAssistant": "مساعد التطبيق",
-    "marketingAssistant": "مساعد التسويق",
-    "knowledgeBase": "قاعدة المعرفة",
-    "payments": "المدفوعات",
-    "notifications": "الإشعارات",
-    "reports": "التقارير",
-    "security": "الأمان",
-    "settings": "إعدادات النظام"
+    "dashboard": "الرئيسية", "templates": "القوالب", "categories": "تصنيفات القوالب", "fonts": "الخطوط", "businesses": "المستخدمون / الأنشطة",
+    "plans": "الباقات", "subscriptions": "الاشتراكات", "credits": "رصيد AI", "simulator": "محاكي العميل", "appAssistant": "مساعد التطبيق",
+    "marketingAssistant": "مساعد التسويق", "knowledgeBase": "قاعدة المعرفة", "payments": "المدفوعات", "notifications": "الإشعارات",
+    "reports": "التقارير", "security": "الأمان", "settings": "إعدادات النظام"
   },
   "dashboard": {
-    "title": "الرئيسية",
-    "welcome": "مرحباً بك في لوحة إدارة صمملي",
-    "status": "حالة الخدمات",
-    "api": "واجهة البرمجة (API)",
-    "ok": "تعمل",
-    "down": "متوقفة"
+    "title": "الرئيسية", "welcome": "مرحباً بك في لوحة إدارة صمملي",
+    "stats": { "templates": "كل القوالب", "published": "منشورة", "drafts": "مسودات", "fonts": "الخطوط", "imports": "ملفات PSD مستوردة", "businesses": "الأنشطة التجارية", "designsToday": "تصاميم اليوم", "creditsUsed": "رصيد AI المستخدم" }
+  },
+  "categories": {
+    "title": "تصنيفات القوالب", "subtitle": "رتّب التصنيفات كما تظهر في التطبيق", "add": "تصنيف جديد", "edit": "تعديل التصنيف", "inactive": "غير مفعّل",
+    "templates": "{count} قالب", "nameAr": "الاسم بالعربية", "nameEn": "الاسم بالإنجليزية", "slug": "المعرّف (slug)", "parent": "التصنيف الأب", "noParent": "— تصنيف رئيسي —", "active": "مفعّل"
+  },
+  "fonts": {
+    "title": "الخطوط", "subtitle": "الخطوط المرفوعة تُضمَّن في التصاميم. الأسماء البديلة تربط أسماء خطوط ملفات PSD بالخط تلقائياً.",
+    "upload": "رفع خط", "alias": "اسم بديل", "addAlias": "إضافة اسم بديل", "aliasHelp": "اكتب اسم الخط كما يظهر في فوتوشوب (PostScript)، مثل Cairo-Bold.",
+    "file": "ملف الخط", "family": "العائلة", "weight": "الوزن", "aliases": "الأسماء البديلة (PSD)", "aliasesHint": "افصل بفاصلة", "license": "الترخيص"
+  },
+  "templates": {
+    "title": "القوالب", "subtitle": "استورد ملفات PSD أو ركّب القوالب يدوياً، ثم حدّد الحقول وانشرها",
+    "newManual": "تركيب يدوي", "newPsd": "استيراد PSD", "search": "بحث…", "allStatuses": "كل الحالات",
+    "status": { "DRAFT": "مسودة", "PUBLISHED": "منشور", "ARCHIVED": "مؤرشف" },
+    "allCategories": "كل التصنيفات", "noCategory": "بدون تصنيف", "empty": "لا توجد قوالب بعد — ابدأ باستيراد ملف PSD", "private": "خاص",
+    "fields": "{count} حقل", "openInEditor": "فتح في المحرّر", "titleAr": "اسم القالب", "titleFromFile": "يُؤخذ من اسم الملف إن تُرك فارغاً",
+    "category": "التصنيف", "psdFile": "ملف PSD", "psdHint": "حتى 200 ميجابايت",
+    "namingHelp": "نصيحة للمصممين: سمِّ الطبقات في فوتوشوب بالبادئة @ أو field: للنصوص (مثل field:groom_name) و zone: للصور (مثل zone:photo) لتُقترح كحقول تلقائياً.",
+    "uploading": "جارٍ الرفع… {pct}٪", "importing": "جارٍ تحليل الملف وفحص الجودة…", "size": "المقاس",
+    "sizes": { "square": "مربع", "portrait": "عمودي", "story": "ستوري", "landscape": "أفقي", "custom": "مقاس مخصص" },
+    "import": "استيراد", "create": "إنشاء"
+  },
+  "import": {
+    "qa": "تطابق {score}٪", "view": { "render": "عرضنا", "composite": "الأصل (فوتوشوب)", "diff": "الفروقات" },
+    "qaWarning": "نسبة التطابق أقل من 95٪ — راجع الفروقات قبل النشر.",
+    "counts": { "editable": "نصوص قابلة للتعديل", "rasterized": "طبقات صور", "merged": "مدمجة في الخلفية", "skipped": "متجاهلة" },
+    "missingFonts": "خطوط غير موجودة في المكتبة", "missingFontsHelp": "ارفع الخط أو اربطه بخط موجود من محرّر القالب — لا يمكن النشر قبل ذلك.",
+    "suggested": "حقول مقترحة من أسماء الطبقات", "warnings": "ملاحظات الاستيراد ({count})"
+  },
+  "form": { "choose": "اختر…", "remove": "إزالة", "fromBrand": "من الهوية" },
+  "editor": {
+    "layers": "الطبقات", "zoomOut": "تصغير", "zoomIn": "تكبير", "fit": "ملاءمة", "original": "الأصل", "overlay": "مقارنة",
+    "badge": { "raster": "صورة", "font": "خط" }, "unlock": "فك القفل (تحريك يدوي)", "lock": "قفل", "visibility": "إظهار/إخفاء",
+    "tabs": { "layer": "الطبقة", "field": "الحقول", "form": "النموذج والتجربة", "settings": "الإعدادات" },
+    "add": { "title": "إضافة طبقة", "background": "خلفية (صورة)", "foreground": "واجهة أمامية (PNG شفاف)", "slot": "مكان صورة", "text": "صندوق نص", "textName": "نص" },
+    "layer": {
+      "none": "اختر طبقة من القائمة أو من اللوحة.", "general": "عام", "name": "الاسم", "x": "س", "y": "ص", "width": "العرض", "height": "الارتفاع", "rotation": "الدوران", "opacity": "الشفافية",
+      "visible": "ظاهرة", "locked": "مقفلة", "lockedHelp": "الطبقات المقفلة تُعدَّل بالأرقام فقط للحفاظ على هوية التصميم.",
+      "unmapped": "الخط غير مربوط:", "pickFont": "اربط بخط من المكتبة…", "uploadFont": "رفع هذا الخط",
+      "text": "النص", "runsNote": "هذا النص متعدد الأنماط؛ تعديله يحوّله إلى نمط واحد.", "direction": "الاتجاه", "textBox": "نوع النص", "point": "سطري", "box": "فقرة",
+      "align": "المحاذاة", "aligns": { "start": "البداية", "center": "الوسط", "end": "النهاية", "justify": "ضبط" },
+      "verticalAlign": "المحاذاة الرأسية", "valign": { "top": "أعلى", "middle": "وسط", "bottom": "أسفل" },
+      "font": "الخط", "size": "الحجم", "lineHeight": "تباعد الأسطر", "color": "اللون",
+      "fit": "ملاءمة النص الطويل", "fitMode": "الطريقة", "fitModes": { "none": "بدون", "shrink": "تصغير", "wrap-shrink": "التفاف ثم تصغير" }, "minSize": "أصغر حجم", "maxLines": "أقصى عدد أسطر",
+      "slot": "مكان الصورة", "fitImage": "ملاءمة الصورة", "cover": "تغطية", "contain": "احتواء",
+      "mask": "القناع", "masks": { "none": "بدون", "circle": "دائرة", "roundedRect": "مستطيل بحواف دائرية", "alpha": "صورة قناع (PNG)", "path": "مسار SVG" },
+      "radius": "نصف قطر الحواف", "svgPath": "مسار SVG (بإحداثيات المكان)", "uploadMask": "رفع قناع PNG (الشفافية = القص)",
+      "uploadPlaceholder": "رفع صورة افتراضية", "replacePlaceholder": "استبدال الصورة الافتراضية", "emptyColor": "لون المكان الفارغ", "allowCrop": "السماح للمستخدم بالقص",
+      "shape": "الشكل", "fill": "التعبئة", "image": "صورة",
+      "convertHelp": "حوّل هذه الصورة إلى مكان يضع فيه المستخدم صورته (الصورة الحالية تبقى افتراضية).", "convertToSlot": "تحويل إلى مكان صورة", "delete": "حذف الطبقة"
+    },
+    "field": {
+      "suggestions": "مقترحة من ملف PSD", "accept": "قبول", "thisLayer": "الطبقة: {name}", "make": "اجعلها حقلاً",
+      "rasterHelp": "حوّل الصورة إلى «مكان صورة» من تبويب الطبقة أولاً.", "notBindable": "لا يمكن ربط هذا النوع بحقل.",
+      "bindExisting": "اربط بحقل موجود…", "all": "حقول النموذج ({count})", "empty": "لا حقول بعد — اختر طبقة نص أو صورة واجعلها حقلاً.",
+      "missingHere": "حقول موجودة في مقاسات أخرى وغير مربوطة هنا: {keys}",
+      "key": "المفتاح", "type": "النوع", "labelAr": "العنوان بالعربية", "labelEn": "العنوان بالإنجليزية", "help": "نص المساعدة", "required": "إجباري", "aiRewrite": "السماح بإعادة الصياغة بالذكاء الاصطناعي",
+      "types": { "text": "نص", "textarea": "نص متعدد الأسطر", "phone": "جوال", "date": "تاريخ", "number": "رقم", "select": "اختيار", "image": "صورة", "color": "لون" },
+      "source": "المصدر", "sources": { "user": "يدخله المستخدم", "logo": "الشعار (الهوية)", "name": "اسم النشاط", "phone": "جوال النشاط", "primaryColor": "اللون الأساسي", "secondaryColor": "اللون الثانوي", "website": "الموقع", "instagram": "انستقرام", "address": "العنوان" },
+      "digits": "الأرقام", "default": "القيمة الافتراضية", "maxLength": "أقصى عدد أحرف", "maxLines": "أقصى عدد أسطر", "options": "الخيارات", "optionsHint": "سطر لكل خيار: القيمة|العنوان",
+      "allowedColors": "الألوان المسموحة", "dateFormat": "صيغة التاريخ", "dates": { "gregorian": "ميلادي", "hijri": "هجري", "both": "هجري وميلادي" },
+      "minWidth": "أقل عرض للصورة", "minHeight": "أقل ارتفاع للصورة", "bindings": "الطبقات المرتبطة",
+      "props": { "text": "النص", "image": "الصورة", "fill": "التعبئة", "color": "لون النص", "stroke": "الحدود", "visible": "الإظهار" }
+    },
+    "form": {
+      "preview": "النموذج كما يراه العميل", "help": "عبّئ قيماً تجريبية لترى التصميم مباشرة.", "noFields": "لا توجد حقول بعد.", "reset": "مسح القيم",
+      "required": "مطلوب", "testRender": "تصدير تجريبي (عبر خادم التصدير)", "standard": "عادي", "run": "تصدير", "duration": "{ms} مللي ثانية", "overflow": "النص طويل: {key}"
+    },
+    "settings": {
+      "general": "عام", "titleAr": "الاسم بالعربية", "titleEn": "الاسم بالإنجليزية", "category": "التصنيف", "tags": "الوسوم", "commaSeparated": "افصل بفاصلة",
+      "access": "الظهور والصلاحيات", "minPlan": "أقل باقة", "plans": { "BASIC": "الأساسية", "BUSINESS": "الأعمال", "PRO": "الاحترافية" },
+      "visibility": "الظهور", "public": "عام (حسب الباقة)", "private": "خاص بأنشطة محددة", "privateHelp": "اختيار الأنشطة يأتي مع صفحة الأنشطة التجارية (M5).",
+      "activityTypes": "أنواع الأنشطة المستهدفة", "activityHint": "فارغ = الجميع",
+      "rules": "قواعد القالب", "lockBrand": "قفل حقول الهوية (لا يغيّرها المستخدم)", "aiLevel": "مستوى الذكاء الاصطناعي",
+      "ai": { "none": "بدون", "text": "النصوص فقط", "textImage": "النصوص والصور" },
+      "aiInstructions": "تعليمات الذكاء الاصطناعي لهذا القالب", "aiPlaceholder": "ما الذي يمكن تغييره، وما الذي يجب أن يبقى، وأسلوب الكتابة…",
+      "exportSizes": "المقاسات المسموحة للتصدير", "exportSizesHelp": "الباقة تحدد أيضاً عدد المقاسات المتاحة."
+    },
+    "top": {
+      "back": "رجوع", "saved": "محفوظ", "unsaved": "تغييرات غير محفوظة", "saving": "جارٍ الحفظ…", "conflict": "تم تعديل القالب من مكان آخر", "saveError": "تعذّر الحفظ", "reload": "إعادة التحميل",
+      "report": "تقرير الاستيراد", "versions": "الإصدارات", "duplicate": "نسخ القالب", "validate": "فحص", "publish": "نشر", "validation": "فحص النشر",
+      "noProblems": "القالب جاهز للنشر.", "noVersions": "لم يُنشر بعد.", "published": "تم نشر الإصدار {version}",
+      "problems": {
+        "DUPLICATE_LAYER_ID": "معرّف طبقة مكرر", "DUPLICATE_FIELD_KEY": "مفتاح حقل مكرر", "BINDING_LAYER_MISSING": "حقل مربوط بطبقة محذوفة",
+        "BINDING_INCOMPATIBLE": "ربط غير متوافق مع نوع الطبقة", "FIELD_TYPE_BINDING_MISMATCH": "نوع الحقل لا يناسب الربط", "FONT_UNMAPPED": "خط غير مربوط بمكتبة الخطوط",
+        "FIELD_MISSING_IN_VARIANT": "حقل غير موجود في أحد المقاسات", "VARIANT_FIELD_TYPE_MISMATCH": "نوع الحقل يختلف بين المقاسات", "DUPLICATE_VARIANT_ID": "مقاس مكرر",
+        "TITLE_MISSING": "اسم القالب مطلوب", "CATEGORY_MISSING": "اختر تصنيفاً", "NO_FIELDS": "أضف حقلاً واحداً على الأقل", "EXPORT_SIZE_UNKNOWN": "مقاس تصدير غير موجود"
+      }
+    },
+    "variants": { "add": "مقاس", "duplicateAs": "نسخ كمقاس جديد", "duplicateHelp": "يُكبَّر التصميم ويُوسَّط تلقائياً، ثم عدّل التوزيع يدوياً.", "fromPsd": "استيراد PSD لهذا المقاس" }
   }
 }

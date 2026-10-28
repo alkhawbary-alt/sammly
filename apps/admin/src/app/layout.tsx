@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { IBM_Plex_Sans_Arabic } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale } from 'next-intl/server';
-import { Sidebar } from '@/components/Sidebar';
+import { Providers } from '@/components/Providers';
 import './globals.css';
 
 const plexArabic = IBM_Plex_Sans_Arabic({
@@ -22,10 +22,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className={plexArabic.variable}>
       <body className="font-sans antialiased">
         <NextIntlClientProvider>
-          <div className="flex min-h-screen">
-            <Sidebar />
-            <main className="flex-1 p-8">{children}</main>
-          </div>
+          <Providers>{children}</Providers>
         </NextIntlClientProvider>
       </body>
     </html>

@@ -10,10 +10,17 @@ const API = process.env.API_PUBLIC_URL ?? 'http://localhost:4000';
 const file = process.argv[2];
 if (!file) throw new Error('usage: e2e-import <psd path>');
 
+const login = await fetch(`${API}/api/v1/admin/auth/login`, {
+  method: 'POST',
+  headers: { 'content-type': 'application/json' },
+  body: JSON.stringify({ email: process.env.ADMIN_SEED_EMAIL ?? 'admin@sammly.local', password: process.env.ADMIN_SEED_PASSWORD ?? 'Sammly-Demo-2026' }),
+});
+const { accessToken } = (await login.json()) as { accessToken: string };
+
 async function call<T>(method: string, url: string, body?: unknown): Promise<T> {
   const res = await fetch(`${API}/api/v1${url}`, {
     method,
-    headers: body ? { 'content-type': 'application/json' } : undefined,
+    headers: { authorization: `Bearer ${accessToken}`, ...(body ? { 'content-type': 'application/json' } : {}) },
     body: body ? JSON.stringify(body) : undefined,
   });
   const json = await res.json();
@@ -62,5 +69,10 @@ const firstUrl = Object.values(imp.assets)[0];
 if (firstUrl) {
   const r = await fetch(firstUrl);
   console.log(`asset GET ${r.status} ${r.headers.get('content-type')} ${(await r.arrayBuffer()).byteLength} bytes`);
+}
+// Optional 2nd arg: create a template from the import with this Arabic title.
+if (process.argv[3]) {
+  const t = await call<{ id: string }>('POST', '/admin/templates', { title: { ar: process.argv[3] }, fromImportId: importId });
+  console.log(`template ${t.id}`);
 }
 console.log(`total ${Date.now() - started}ms`);

@@ -1,35 +1,105 @@
 {
-  "app": {
-    "name": "Sammly",
-    "subtitle": "Admin",
-    "soon": "Soon",
-    "language": "العربية"
-  },
+  "app": { "name": "Sammly", "subtitle": "Admin", "soon": "Soon", "language": "العربية" },
+  "common": { "logout": "Sign out", "confirmDelete": "Delete this item?", "cancel": "Cancel", "save": "Save", "add": "Add" },
+  "login": { "subtitle": "Template administration", "email": "Email", "password": "Password", "submit": "Sign in", "invalid": "Wrong email or password" },
   "nav": {
-    "dashboard": "Dashboard",
-    "templates": "Templates",
-    "categories": "Categories",
-    "fonts": "Fonts",
-    "businesses": "Businesses",
-    "plans": "Plans",
-    "subscriptions": "Subscriptions",
-    "credits": "AI credits",
-    "simulator": "Customer simulator",
-    "appAssistant": "App assistant",
-    "marketingAssistant": "Marketing assistant",
-    "knowledgeBase": "Knowledge base",
-    "payments": "Payments",
-    "notifications": "Notifications",
-    "reports": "Reports",
-    "security": "Security",
-    "settings": "System settings"
+    "dashboard": "Dashboard", "templates": "Templates", "categories": "Categories", "fonts": "Fonts", "businesses": "Businesses",
+    "plans": "Plans", "subscriptions": "Subscriptions", "credits": "AI credits", "simulator": "Customer simulator", "appAssistant": "App assistant",
+    "marketingAssistant": "Marketing assistant", "knowledgeBase": "Knowledge base", "payments": "Payments", "notifications": "Notifications",
+    "reports": "Reports", "security": "Security", "settings": "System settings"
   },
   "dashboard": {
-    "title": "Dashboard",
-    "welcome": "Welcome to the Sammly admin",
-    "status": "Service status",
-    "api": "API",
-    "ok": "Up",
-    "down": "Down"
+    "title": "Dashboard", "welcome": "Welcome to the Sammly admin",
+    "stats": { "templates": "All templates", "published": "Published", "drafts": "Drafts", "fonts": "Fonts", "imports": "PSD imports", "businesses": "Businesses", "designsToday": "Designs today", "creditsUsed": "AI credits used" }
+  },
+  "categories": {
+    "title": "Categories", "subtitle": "Order categories as they appear in the app", "add": "New category", "edit": "Edit category", "inactive": "Inactive",
+    "templates": "{count} templates", "nameAr": "Arabic name", "nameEn": "English name", "slug": "Slug", "parent": "Parent", "noParent": "— top level —", "active": "Active"
+  },
+  "fonts": {
+    "title": "Fonts", "subtitle": "Uploaded fonts are embedded in every render. Aliases map PSD font names to a font automatically.",
+    "upload": "Upload font", "alias": "Alias", "addAlias": "Add alias", "aliasHelp": "The font name as Photoshop stores it (PostScript), e.g. Cairo-Bold.",
+    "file": "Font file", "family": "Family", "weight": "Weight", "aliases": "PSD aliases", "aliasesHint": "comma-separated", "license": "License"
+  },
+  "templates": {
+    "title": "Templates", "subtitle": "Import PSDs or compose templates manually, tag the fields and publish",
+    "newManual": "Manual composition", "newPsd": "Import PSD", "search": "Search…", "allStatuses": "All statuses",
+    "status": { "DRAFT": "Draft", "PUBLISHED": "Published", "ARCHIVED": "Archived" },
+    "allCategories": "All categories", "noCategory": "No category", "empty": "No templates yet — start by importing a PSD", "private": "Private",
+    "fields": "{count} fields", "openInEditor": "Open in editor", "titleAr": "Template name (Arabic)", "titleFromFile": "Taken from the file name if empty",
+    "category": "Category", "psdFile": "PSD file", "psdHint": "up to 200 MB",
+    "namingHelp": "Tip for designers: name layers in Photoshop with @ or field: for texts (e.g. field:groom_name) and zone: for photos (e.g. zone:photo) so they're suggested as fields automatically.",
+    "uploading": "Uploading… {pct}%", "importing": "Parsing the file and running visual QA…", "size": "Size",
+    "sizes": { "square": "Square", "portrait": "Portrait", "story": "Story", "landscape": "Landscape", "custom": "Custom size" },
+    "import": "Import", "create": "Create"
+  },
+  "import": {
+    "qa": "{score}% match", "view": { "render": "Our render", "composite": "Original (Photoshop)", "diff": "Differences" },
+    "qaWarning": "Match is under 95% — review the differences before publishing.",
+    "counts": { "editable": "Editable texts", "rasterized": "Image layers", "merged": "Merged into background", "skipped": "Skipped" },
+    "missingFonts": "Fonts missing from the library", "missingFontsHelp": "Upload the font or map it to an existing one in the editor — publishing is blocked until then.",
+    "suggested": "Fields suggested from layer names", "warnings": "Import notes ({count})"
+  },
+  "form": { "choose": "Choose…", "remove": "Remove", "fromBrand": "from brand kit" },
+  "editor": {
+    "layers": "Layers", "zoomOut": "Zoom out", "zoomIn": "Zoom in", "fit": "Fit", "original": "Original", "overlay": "Compare",
+    "badge": { "raster": "image", "font": "font" }, "unlock": "Unlock (move by hand)", "lock": "Lock", "visibility": "Show/hide",
+    "tabs": { "layer": "Layer", "field": "Fields", "form": "Form & test", "settings": "Settings" },
+    "add": { "title": "Add layer", "background": "Background (image)", "foreground": "Foreground (transparent PNG)", "slot": "Image slot", "text": "Text box", "textName": "Text" },
+    "layer": {
+      "none": "Select a layer in the list or on the canvas.", "general": "General", "name": "Name", "x": "X", "y": "Y", "width": "Width", "height": "Height", "rotation": "Rotation", "opacity": "Opacity",
+      "visible": "Visible", "locked": "Locked", "lockedHelp": "Locked layers are positioned by numbers only, to keep the design identity.",
+      "unmapped": "Font not mapped:", "pickFont": "Map to a library font…", "uploadFont": "Upload this font",
+      "text": "Text", "runsNote": "This text has several styles; editing it makes it a single style.", "direction": "Direction", "textBox": "Text type", "point": "Point (single line)", "box": "Paragraph",
+      "align": "Alignment", "aligns": { "start": "Start", "center": "Center", "end": "End", "justify": "Justify" },
+      "verticalAlign": "Vertical alignment", "valign": { "top": "Top", "middle": "Middle", "bottom": "Bottom" },
+      "font": "Font", "size": "Size", "lineHeight": "Line height", "color": "Color",
+      "fit": "Long text", "fitMode": "Mode", "fitModes": { "none": "None", "shrink": "Shrink", "wrap-shrink": "Wrap then shrink" }, "minSize": "Minimum size", "maxLines": "Max lines",
+      "slot": "Image slot", "fitImage": "Image fit", "cover": "Cover", "contain": "Contain",
+      "mask": "Mask", "masks": { "none": "None", "circle": "Circle", "roundedRect": "Rounded rectangle", "alpha": "Mask image (PNG)", "path": "SVG path" },
+      "radius": "Corner radius", "svgPath": "SVG path (slot coordinates)", "uploadMask": "Upload PNG mask (transparency = cut)",
+      "uploadPlaceholder": "Upload placeholder image", "replacePlaceholder": "Replace placeholder", "emptyColor": "Empty slot color", "allowCrop": "Let users crop",
+      "shape": "Shape", "fill": "Fill", "image": "Image",
+      "convertHelp": "Turn this image into a slot where the user puts their own photo (the current image stays as placeholder).", "convertToSlot": "Convert to image slot", "delete": "Delete layer"
+    },
+    "field": {
+      "suggestions": "Suggested by the PSD", "accept": "Accept", "thisLayer": "Layer: {name}", "make": "Make this a field",
+      "rasterHelp": "Convert the image to an image slot in the Layer tab first.", "notBindable": "This layer type can't be bound to a field.",
+      "bindExisting": "Bind to an existing field…", "all": "Form fields ({count})", "empty": "No fields yet — select a text or image layer and make it a field.",
+      "missingHere": "Fields from other sizes not bound here: {keys}",
+      "key": "Key", "type": "Type", "labelAr": "Arabic label", "labelEn": "English label", "help": "Help text", "required": "Required", "aiRewrite": "Allow AI rewriting",
+      "types": { "text": "Text", "textarea": "Multi-line text", "phone": "Phone", "date": "Date", "number": "Number", "select": "Choice", "image": "Image", "color": "Color" },
+      "source": "Source", "sources": { "user": "Entered by the user", "logo": "Logo (brand)", "name": "Business name", "phone": "Business phone", "primaryColor": "Primary color", "secondaryColor": "Secondary color", "website": "Website", "instagram": "Instagram", "address": "Address" },
+      "digits": "Digits", "default": "Default value", "maxLength": "Max characters", "maxLines": "Max lines", "options": "Options", "optionsHint": "one per line: value|label",
+      "allowedColors": "Allowed colors", "dateFormat": "Date format", "dates": { "gregorian": "Gregorian", "hijri": "Hijri", "both": "Hijri and Gregorian" },
+      "minWidth": "Min image width", "minHeight": "Min image height", "bindings": "Bound layers",
+      "props": { "text": "Text", "image": "Image", "fill": "Fill", "color": "Text color", "stroke": "Stroke", "visible": "Visibility" }
+    },
+    "form": {
+      "preview": "The form your customers see", "help": "Fill in sample values to see the design live.", "noFields": "No fields yet.", "reset": "Clear values",
+      "required": "Required", "testRender": "Test render (export server)", "standard": "Standard", "run": "Render", "duration": "{ms} ms", "overflow": "Text too long: {key}"
+    },
+    "settings": {
+      "general": "General", "titleAr": "Arabic name", "titleEn": "English name", "category": "Category", "tags": "Tags", "commaSeparated": "comma-separated",
+      "access": "Visibility & access", "minPlan": "Minimum plan", "plans": { "BASIC": "Basic", "BUSINESS": "Business", "PRO": "Pro" },
+      "visibility": "Visibility", "public": "Public (by plan)", "private": "Private to selected businesses", "privateHelp": "Picking businesses comes with the Businesses page (M5).",
+      "activityTypes": "Target activity types", "activityHint": "empty = everyone",
+      "rules": "Template rules", "lockBrand": "Lock brand fields (users can't change them)", "aiLevel": "AI level",
+      "ai": { "none": "None", "text": "Text only", "textImage": "Text and images" },
+      "aiInstructions": "AI instructions for this template", "aiPlaceholder": "What may change, what must stay, writing style…",
+      "exportSizes": "Sizes allowed for export", "exportSizesHelp": "Plans also limit how many sizes a business can use."
+    },
+    "top": {
+      "back": "Back", "saved": "Saved", "unsaved": "Unsaved changes", "saving": "Saving…", "conflict": "Changed elsewhere", "saveError": "Save failed", "reload": "Reload",
+      "report": "Import report", "versions": "Versions", "duplicate": "Duplicate", "validate": "Validate", "publish": "Publish", "validation": "Publish check",
+      "noProblems": "Ready to publish.", "noVersions": "Not published yet.", "published": "Version {version} published",
+      "problems": {
+        "DUPLICATE_LAYER_ID": "Duplicate layer id", "DUPLICATE_FIELD_KEY": "Duplicate field key", "BINDING_LAYER_MISSING": "Field bound to a deleted layer",
+        "BINDING_INCOMPATIBLE": "Binding doesn't fit the layer type", "FIELD_TYPE_BINDING_MISMATCH": "Field type doesn't fit the binding", "FONT_UNMAPPED": "Font not mapped to the library",
+        "FIELD_MISSING_IN_VARIANT": "Field missing in a size", "VARIANT_FIELD_TYPE_MISMATCH": "Field type differs between sizes", "DUPLICATE_VARIANT_ID": "Duplicate size",
+        "TITLE_MISSING": "Template name is required", "CATEGORY_MISSING": "Pick a category", "NO_FIELDS": "Add at least one field", "EXPORT_SIZE_UNKNOWN": "Unknown export size"
+      }
+    },
+    "variants": { "add": "Size", "duplicateAs": "Duplicate as new size", "duplicateHelp": "The design is scaled and centred automatically; then fix the layout by hand.", "fromPsd": "Import a PSD for this size" }
   }
 }

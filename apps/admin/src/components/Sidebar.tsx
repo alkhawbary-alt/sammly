@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import {
   Bell,
@@ -21,6 +20,8 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { LocaleToggle } from './LocaleToggle';
+import { NavLink } from './NavLink';
+import { UserBox } from './UserBox';
 
 interface NavItem {
   key: string;
@@ -32,9 +33,9 @@ interface NavItem {
 
 const NAV: NavItem[] = [
   { key: 'dashboard', href: '/', icon: LayoutDashboard, enabled: true },
-  { key: 'templates', href: '/templates', icon: LayoutTemplate, enabled: false },
-  { key: 'categories', href: '/categories', icon: FolderTree, enabled: false },
-  { key: 'fonts', href: '/fonts', icon: Type, enabled: false },
+  { key: 'templates', href: '/templates', icon: LayoutTemplate, enabled: true },
+  { key: 'categories', href: '/categories', icon: FolderTree, enabled: true },
+  { key: 'fonts', href: '/fonts', icon: Type, enabled: true },
   { key: 'businesses', href: '/businesses', icon: Building2, enabled: false },
   { key: 'plans', href: '/plans', icon: Package, enabled: false },
   { key: 'subscriptions', href: '/subscriptions', icon: Receipt, enabled: false },
@@ -53,7 +54,7 @@ const NAV: NavItem[] = [
 export async function Sidebar() {
   const t = await getTranslations();
   return (
-    <aside className="flex w-64 shrink-0 flex-col border-e border-slate-200 bg-white">
+    <aside className="flex w-60 shrink-0 flex-col border-e border-slate-200 bg-white">
       <div className="border-b border-slate-200 px-5 py-4">
         <div className="text-xl font-bold text-brand-600">{t('app.name')}</div>
         <div className="text-xs text-slate-500">{t('app.subtitle')}</div>
@@ -61,14 +62,10 @@ export async function Sidebar() {
       <nav className="flex-1 space-y-0.5 overflow-y-auto p-3">
         {NAV.map(({ key, href, icon: Icon, enabled }) =>
           enabled ? (
-            <Link
-              key={key}
-              href={href}
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-brand-50 hover:text-brand-700"
-            >
+            <NavLink key={key} href={href}>
               <Icon className="size-4" />
               <span>{t(`nav.${key}`)}</span>
-            </Link>
+            </NavLink>
           ) : (
             <div
               key={key}
@@ -82,7 +79,8 @@ export async function Sidebar() {
           ),
         )}
       </nav>
-      <div className="border-t border-slate-200 p-3">
+      <div className="space-y-1 border-t border-slate-200 p-3">
+        <UserBox />
         <LocaleToggle />
       </div>
     </aside>
