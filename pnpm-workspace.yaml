@@ -13,3 +13,4 @@ allowBuilds:
   sharp: true
   '@napi-rs/canvas': true
   unrs-resolver: true
+  '@ibm/plex-sans-arabic': false
