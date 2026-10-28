@@ -1,24 +1,31 @@
-import pg from 'pg';
+import { db, disconnectDb } from '@sammly/db';
+import { config } from '@sammly/platform';
 import { buildApp } from './app';
+import { adminFontRoutes } from './routes/admin-fonts';
+import { adminImportRoutes } from './routes/admin-imports';
+import { storageRoutes } from './routes/storage';
 
-const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL, max: 5 });
-
+const c = config();
 const app = buildApp(
   {
     checkDb: async () => {
-      await pool.query('select 1');
+      await db().$queryRaw`select 1`;
       return true;
     },
+    routes: async (v1) => {
+      await v1.register(storageRoutes);
+      await v1.register(adminImportRoutes);
+      await v1.register(adminFontRoutes);
+    },
   },
-  { logger: { level: process.env.LOG_LEVEL ?? 'info' } },
+  { logger: { level: c.LOG_LEVEL } },
 );
 
-const port = Number(process.env.API_PORT ?? 4000);
-await app.listen({ port, host: '0.0.0.0' });
+await app.listen({ port: c.API_PORT, host: '0.0.0.0' });
 
 const close = async () => {
   await app.close();
-  await pool.end();
+  await disconnectDb();
   process.exit(0);
 };
 process.on('SIGINT', close);

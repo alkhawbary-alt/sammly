@@ -19,6 +19,7 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @sammly/db generate
       - name: Install Chromium (golden render tests)
         run: pnpm --filter @sammly/renderer-html exec playwright install --with-deps chromium
       - run: pnpm lint

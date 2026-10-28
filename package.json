@@ -13,7 +13,9 @@
     "lint": "eslint .",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
-    "check": "pnpm lint && pnpm typecheck && pnpm test"
+    "check": "pnpm lint && pnpm typecheck && pnpm test",
+    "db:migrate": "pnpm --filter @sammly/db migrate:deploy",
+    "db:seed": "pnpm --filter @sammly/api seed"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.0",

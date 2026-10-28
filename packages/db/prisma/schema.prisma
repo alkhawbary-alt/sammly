@@ -1,0 +1,432 @@
+// Sammly data model (brief §9). UUID ids, createdAt/updatedAt everywhere,
+// soft delete (deletedAt) on business-facing entities.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── People ─────────────────────────────────────────────────────────────
+
+enum AdminRole {
+  SUPER_ADMIN
+  TEMPLATE_EDITOR
+  SUPPORT
+}
+
+model AdminUser {
+  id           String    @id @default(uuid()) @db.Uuid
+  email        String    @unique
+  passwordHash String
+  name         String
+  role         AdminRole @default(TEMPLATE_EDITOR)
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+enum BusinessStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+model Business {
+  id            String         @id @default(uuid()) @db.Uuid
+  name          String
+  slug          String         @unique
+  activityType  String
+  city          String?
+  country       String         @default("SA")
+  status        BusinessStatus @default(ACTIVE)
+  planId        String         @db.Uuid
+  plan          Plan           @relation(fields: [planId], references: [id])
+  notes         String?
+  users         BusinessUser[]
+  brandKit      BrandKit?
+  aiProfile     BusinessAiProfile?
+  subscriptions Subscription[]
+  access        TemplateAccess[]
+  designs       Design[]
+  aiLedger      AiCreditLedger[]
+  aiRequests    AiRequest[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  deletedAt     DateTime?
+}
+
+enum BusinessUserRole {
+  OWNER
+  MEMBER
+}
+
+model BusinessUser {
+  id           String           @id @default(uuid()) @db.Uuid
+  businessId   String           @db.Uuid
+  business     Business         @relation(fields: [businessId], references: [id])
+  email        String?          @unique
+  phone        String?          @unique
+  passwordHash String
+  name         String
+  role         BusinessUserRole @default(OWNER)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  deletedAt    DateTime?
+}
+
+model BrandKit {
+  businessId       String   @id @db.Uuid
+  business         Business @relation(fields: [businessId], references: [id])
+  logoAssetId      String?  @db.Uuid
+  logoLightAssetId String?  @db.Uuid
+  /// { primary, secondary, accent }
+  colors           Json     @default("{}")
+  fontIds          String[] @db.Uuid
+  phone            String?
+  website          String?
+  /// { instagram, x, snapchat, tiktok }
+  social           Json     @default("{}")
+  address          String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+/// "AI instructions per user" from the spec.
+model BusinessAiProfile {
+  businessId          String   @id @db.Uuid
+  business            Business @relation(fields: [businessId], references: [id])
+  activityDescription String?
+  writingTone         String?
+  audience            String?
+  market              String?
+  visualStyle         String?
+  forbidden           String?
+  customInstructions  String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+// ─── Plans ──────────────────────────────────────────────────────────────
+
+enum PlanCode {
+  BASIC
+  BUSINESS
+  PRO
+}
+
+model Plan {
+  id               String         @id @default(uuid()) @db.Uuid
+  code             PlanCode       @unique
+  /// { ar, en }
+  name             Json
+  monthlyAiCredits Int            @default(0)
+  /// typed by PlanFeatures in @sammly/shared
+  features         Json
+  businesses       Business[]
+  subscriptions    Subscription[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+}
+
+enum SubscriptionSource {
+  MANUAL
+}
+
+model Subscription {
+  id         String             @id @default(uuid()) @db.Uuid
+  businessId String             @db.Uuid
+  business   Business           @relation(fields: [businessId], references: [id])
+  planId     String             @db.Uuid
+  plan       Plan               @relation(fields: [planId], references: [id])
+  status     SubscriptionStatus @default(ACTIVE)
+  startsAt   DateTime           @default(now())
+  endsAt     DateTime?
+  source     SubscriptionSource @default(MANUAL)
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+}
+
+// ─── Templates ──────────────────────────────────────────────────────────
+
+model Category {
+  id        String     @id @default(uuid()) @db.Uuid
+  parentId  String?    @db.Uuid
+  parent    Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children  Category[] @relation("CategoryTree")
+  slug      String     @unique
+  /// { ar, en }
+  name      Json
+  icon      String?
+  sortOrder Int        @default(0)
+  isActive  Boolean    @default(true)
+  templates Template[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+enum TemplateStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum TemplateVisibility {
+  PUBLIC
+  PRIVATE
+}
+
+model Template {
+  id               String             @id @default(uuid()) @db.Uuid
+  /// { ar, en }
+  title            Json
+  slug             String             @unique
+  categoryId       String?            @db.Uuid
+  category         Category?          @relation(fields: [categoryId], references: [id])
+  tags             String[]
+  status           TemplateStatus     @default(DRAFT)
+  visibility       TemplateVisibility @default(PUBLIC)
+  minPlan          PlanCode           @default(BASIC)
+  activityTypes    String[]
+  currentVersionId String?            @db.Uuid
+  /// { revision, variants: [{ id, name, width, height, document }] }
+  draftData        Json
+  draftRevision    Int                @default(0)
+  duplicatedFromId String?            @db.Uuid
+  createdBy        String?            @db.Uuid
+  versions         TemplateVersion[]
+  access           TemplateAccess[]
+  imports          ImportJob[]
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  deletedAt        DateTime?
+
+  @@index([status, visibility])
+}
+
+model TemplateAccess {
+  templateId String   @db.Uuid
+  template   Template @relation(fields: [templateId], references: [id])
+  businessId String   @db.Uuid
+  business   Business @relation(fields: [businessId], references: [id])
+  createdAt  DateTime @default(now())
+
+  @@id([templateId, businessId])
+}
+
+/// Immutable after insert.
+model TemplateVersion {
+  id          String   @id @default(uuid()) @db.Uuid
+  templateId  String   @db.Uuid
+  template    Template @relation(fields: [templateId], references: [id])
+  version     Int
+  /// [{ id, name, width, height, document }]
+  variants    Json
+  fieldsHash  String
+  publishedAt DateTime @default(now())
+  publishedBy String?  @db.Uuid
+  designs     Design[]
+  createdAt   DateTime @default(now())
+
+  @@unique([templateId, version])
+}
+
+model Font {
+  id        String   @id @default(uuid()) @db.Uuid
+  family    String
+  weight    Int      @default(400)
+  style     String   @default("normal")
+  assetId   String   @db.Uuid
+  asset     Asset    @relation(fields: [assetId], references: [id])
+  /// PSD PostScript names, e.g. Cairo-Bold
+  aliases   String[]
+  scripts   String[]
+  license   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  @@index([aliases], type: Gin)
+}
+
+enum AssetKind {
+  PSD
+  LAYER
+  COMPOSITE
+  UPLOAD
+  RENDER
+  THUMB
+  FONT
+  BRAND
+  QA_DIFF
+}
+
+model Asset {
+  id        String    @id @default(uuid()) @db.Uuid
+  key       String    @unique
+  mime      String
+  bytes     Int
+  width     Int?
+  height    Int?
+  sha256    String
+  kind      AssetKind
+  ownerType String?
+  ownerId   String?
+  fonts     Font[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([ownerType, ownerId])
+  @@index([sha256])
+}
+
+// ─── Jobs ───────────────────────────────────────────────────────────────
+
+enum JobStatus {
+  QUEUED
+  RUNNING
+  SUCCEEDED
+  FAILED
+}
+
+/// Queue source of truth (status/result). Drivers (pg polling, BullMQ) only deliver job ids.
+model Job {
+  id          String    @id @default(uuid()) @db.Uuid
+  type        String
+  status      JobStatus @default(QUEUED)
+  payload     Json
+  result      Json?
+  error       String?
+  attempts    Int       @default(0)
+  maxAttempts Int       @default(2)
+  runAfter    DateTime  @default(now())
+  startedAt   DateTime?
+  finishedAt  DateTime?
+  durationMs  Int?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([status, runAfter])
+}
+
+model ImportJob {
+  id              String    @id @default(uuid()) @db.Uuid
+  jobId           String?   @db.Uuid
+  templateId      String?   @db.Uuid
+  template        Template? @relation(fields: [templateId], references: [id])
+  sourceAssetId   String    @db.Uuid
+  fileName        String
+  status          JobStatus @default(QUEUED)
+  /// ImportReport from @sammly/importer-psd
+  report          Json?
+  /// Draft TemplateDocument produced by the import
+  document        Json?
+  qaScore         Float?
+  qaDiffAssetId   String?   @db.Uuid
+  qaRenderAssetId String?   @db.Uuid
+  error           String?
+  createdBy       String?   @db.Uuid
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+// ─── Designs & AI ───────────────────────────────────────────────────────
+
+enum DesignFormat {
+  png
+  jpg
+  pdf
+}
+
+enum DesignQuality {
+  standard
+  hd
+}
+
+model Design {
+  id                String          @id @default(uuid()) @db.Uuid
+  businessId        String          @db.Uuid
+  business          Business        @relation(fields: [businessId], references: [id])
+  userId            String?         @db.Uuid
+  templateVersionId String          @db.Uuid
+  templateVersion   TemplateVersion @relation(fields: [templateVersionId], references: [id])
+  variantId         String
+  values            Json
+  renderHash        String
+  format            DesignFormat
+  quality           DesignQuality
+  outputAssetId     String?         @db.Uuid
+  thumbAssetId      String?         @db.Uuid
+  status            JobStatus       @default(QUEUED)
+  durationMs        Int?
+  error             String?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  deletedAt         DateTime?
+
+  @@index([businessId, createdAt])
+  @@index([renderHash])
+}
+
+enum CreditReason {
+  MONTHLY_GRANT
+  SPEND
+  ADMIN_ADJUST
+  REFUND
+}
+
+/// Append-only; balance = SUM(delta).
+model AiCreditLedger {
+  id           String       @id @default(uuid()) @db.Uuid
+  businessId   String       @db.Uuid
+  business     Business     @relation(fields: [businessId], references: [id])
+  delta        Int
+  reason       CreditReason
+  refType      String?
+  refId        String?
+  balanceAfter Int
+  createdAt    DateTime     @default(now())
+
+  @@index([businessId, createdAt])
+}
+
+model AiRequest {
+  id                String    @id @default(uuid()) @db.Uuid
+  businessId        String    @db.Uuid
+  business          Business  @relation(fields: [businessId], references: [id])
+  templateVersionId String?   @db.Uuid
+  fieldKey          String?
+  action            String
+  input             Json
+  output            Json?
+  credits           Int       @default(0)
+  provider          String
+  model             String
+  tokensIn          Int?
+  tokensOut         Int?
+  status            JobStatus @default(QUEUED)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model AuditLog {
+  id         String   @id @default(uuid()) @db.Uuid
+  actorType  String
+  actorId    String?
+  action     String
+  entityType String
+  entityId   String?
+  diff       Json?
+  createdAt  DateTime @default(now())
+
+  @@index([entityType, entityId])
+}

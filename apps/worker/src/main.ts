@@ -1,29 +1,40 @@
 /**
- * Worker process: will host the import, render and ai queues (M2, M4, M6).
- * For now it only exposes /health and /ready for orchestration.
+ * Worker process: runs queued jobs (import now; render and ai in M4/M6) and exposes
+ * /health and /ready for orchestration.
  */
 import Fastify from 'fastify';
-import pg from 'pg';
+import { db, disconnectDb } from '@sammly/db';
+import { config, startWorker } from '@sammly/platform';
+import { importPsdJob } from './jobs/import-psd';
+import { closeBrowser } from './render';
 
-const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL, max: 2 });
-const health = Fastify({ logger: { level: process.env.LOG_LEVEL ?? 'info' } });
+const c = config();
+const health = Fastify({ logger: { level: c.LOG_LEVEL } });
 
 health.get('/health', async () => ({ status: 'ok', role: 'worker' }));
 health.get('/ready', async (_req, reply) => {
-  const db = await pool
-    .query('select 1')
+  const ok = await db()
+    .$queryRaw`select 1`
     .then(() => true)
     .catch(() => false);
-  return reply.status(db ? 200 : 503).send({ status: db ? 'ready' : 'not_ready', checks: { db } });
+  return reply.status(ok ? 200 : 503).send({ status: ok ? 'ready' : 'not_ready', checks: { db: ok } });
 });
 
-const port = Number(process.env.WORKER_HEALTH_PORT ?? 4001);
-await health.listen({ port, host: '0.0.0.0' });
-health.log.info({ concurrency: Number(process.env.RENDER_CONCURRENCY ?? 2) }, 'worker started (no queues yet)');
+await health.listen({ port: c.WORKER_HEALTH_PORT, host: '0.0.0.0' });
+
+const worker = startWorker({
+  handlers: {
+    'import:psd': { handler: importPsdJob, concurrency: 1 },
+  },
+  log: (msg, extra) => health.log.info(extra ?? {}, msg),
+});
+health.log.info({ queue: c.QUEUE_DRIVER, renderConcurrency: c.RENDER_CONCURRENCY }, 'worker started');
 
 const close = async () => {
+  await worker.stop();
+  await closeBrowser();
   await health.close();
-  await pool.end();
+  await disconnectDb();
   process.exit(0);
 };
 process.on('SIGINT', close);
