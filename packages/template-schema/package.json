@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "tsx scripts/emit-json-schema.ts",
-    "typecheck": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.test.json",
     "test": "vitest run"
   },
   "dependencies": {
